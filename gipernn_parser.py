@@ -50,6 +50,11 @@ def adv_parser(base_url, headers):
             
             price = soup.find('div', attrs={'class': 'price'}.text
             district = soup.td.next.next.text
+            
+            full_adv_content.append({            /* еще надо создать переменую в начале функции full_adv_content = []
+                    'price': price,
+                    'district': district,
+                    })
         '''
 
     else:
