@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup as bs
 
+
 headers = {'accept':'*/*',
            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
 base_url = 'https://www.gipernn.ru/prodazha-kvartir?sort=address&per-page=100&page=1'
-
+full_links = []
 def adv_parser(base_url, headers):
-    full_links = []
+
     urls = []
     session = requests.session()
     request = session.get(base_url, headers=headers, verify=False)
@@ -42,20 +43,6 @@ def adv_parser(base_url, headers):
                 except:
                     pass
         print(len(full_links))
-
-        '''
-        for full_link in full_links:
-            request = session.get(full_link, headers=headers, verify=False)
-            soup = bs(request.content, 'lxml')
-            
-            price = soup.find('div', attrs={'class': 'price'}.text
-            district = soup.td.next.next.text
-            
-            full_adv_content.append({            /* еще надо создать переменую в начале функции full_adv_content = []
-                    'price': price,
-                    'district': district,
-                    })
-        '''
 
     else:
         print("ERRRORRRRrrrrr")
