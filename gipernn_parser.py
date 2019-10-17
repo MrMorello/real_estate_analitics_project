@@ -9,7 +9,7 @@ def adv_parser(base_url, headers):
 
     urls = []
     session = requests.session()
-    request = session.get(base_url, headers=headers)
+    request = session.get(base_url, headers=headers, verify=False)
     if request.status_code == 200:
         soup = bs(request.content, 'lxml')
 
@@ -26,7 +26,7 @@ def adv_parser(base_url, headers):
                 urls.append(url)
 
         for url in urls:
-            request = session.get(url, headers=headers)
+            request = session.get(url, headers=headers, verify=False)
             soup = bs(request.content, 'lxml')
 
             blocks = soup.find_all('tr')

@@ -11,7 +11,7 @@ adv_list = []
 def per_adv_parser(base_url, headers):
     session = requests.session()
     for full_link in full_links:
-        request = session.get(full_link, headers=headers)
+        request = session.get(full_link, headers=headers, verify=False)
         if request.status_code == 200:
             soup = bs(request.content, 'lxml')
             try:
