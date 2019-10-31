@@ -35,6 +35,10 @@ plt.savefig('images\_02attribute_histogram_plots')
 
 plt.show()
 
+# Построение матрицы коррелиации и создание новых призноков - перенести в data_aggregation
+corr_matrix = housing.corr()
+corr_matrix.to_excel('tables\corr_matrix.xlsx')
+#Эксперементы с созданием новых признаков
 
 
 

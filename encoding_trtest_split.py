@@ -1,18 +1,27 @@
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import LabelEncoder
-from data_aggregation import housing
 import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
+from data_aggregation import housing
 
+pd.set_option('display.max_columns', 50)
 #Преобразуем в категориальные признаки: район (district) и материал стен (material)
+# и сохраняем в отельный DataFrame-"dist_mat_df"
 
 housing_cat = housing[['district', 'material']].copy()
-le = LabelEncoder()
-housing_cat['district'] = le.fit_transform(housing_cat['district'])
-housing_cat['material'] = le.fit_transform(housing_cat['material'])
-print(housing_cat)
-print(housing_cat['district'].value_counts())
-print(housing_cat['material'].value_counts())
+encoder = OneHotEncoder()
+housing_cat = encoder.fit_transform(housing_cat).toarray()
+merged_enc_cat1 = encoder.categories_[0]
+merged_enc_cat2 = encoder.categories_[1]
+merged_enc_cat = [*merged_enc_cat1, *merged_enc_cat2]
+#print(merged_enc_cat)
+dis_mat_df = pd.DataFrame(data=housing_cat, columns=merged_enc_cat)
+#print(dis_mat_df.cumsum())
+catDF_plus_housingDF = housing.join(dis_mat_df) # ОБЪЕДИНЕННЫЙ ДАТАФРЕЙМ С КАТЕГОР ПРИЗНАКАМИ (дропнуть типы object)
+
+
+
+
+# Разделение на Train_Test SPLIT
+
 '''
 1. данный блок вставить перед вырисовыванием графиков
 стратифицированный набор:
