@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9a36bca1-c8e6-4d12-a7cd-9c6afbafa324" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_aggregation.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_aggregation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encoding_trtest_split.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding_trtest_split.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/describe_table.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/tables/describe_table.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -258,7 +256,7 @@
       <workItem from="1572520243517" duration="7004000" />
       <workItem from="1573111689093" duration="7182000" />
       <workItem from="1573447122667" duration="11516000" />
-      <workItem from="1573533915138" duration="4599000" />
+      <workItem from="1573533915138" duration="6212000" />
     </task>
     <task id="LOCAL-00001" summary="парсер объявлений в процессе создания">
       <created>1571145705161</created>
