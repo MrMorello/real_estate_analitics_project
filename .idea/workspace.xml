@@ -2,26 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9a36bca1-c8e6-4d12-a7cd-9c6afbafa324" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/hh_parser.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tables/gipernn_adv.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_aggregation.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_aggregation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/_02attribute_histogram_plots.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/_02attribute_histogram_plots.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/avd_parser.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/data_aggregation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/gipernn_parser.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/hh_pars.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/images/_02attribute_histogram_plots.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/images/california2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/images/colorized_map_plot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/tables/describe_table.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/real_estate_analitics_project/tables/gipernn_adv.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/encoding_trtest_split.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding_trtest_split.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tables/describe_table.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/tables/describe_table.xlsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -141,6 +124,9 @@
       <module name="hh_parser" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -160,6 +146,9 @@
       <module name="hh_parser" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -264,7 +253,12 @@
       <workItem from="1571373900111" duration="20327000" />
       <workItem from="1571723334624" duration="11037000" />
       <workItem from="1572345795767" duration="11000" />
-      <workItem from="1572410658381" duration="16635000" />
+      <workItem from="1572410658381" duration="16959000" />
+      <workItem from="1572496523369" duration="10239000" />
+      <workItem from="1572520243517" duration="7004000" />
+      <workItem from="1573111689093" duration="7182000" />
+      <workItem from="1573447122667" duration="11516000" />
+      <workItem from="1573533915138" duration="4599000" />
     </task>
     <task id="LOCAL-00001" summary="парсер объявлений в процессе создания">
       <created>1571145705161</created>
@@ -293,7 +287,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -310,7 +306,7 @@
     <SUITE FILE_PATH="coverage/hh_parser$to_dataframe.coverage" NAME="to_dataframe Coverage Results" MODIFIED="1570770512969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hh_parser$gipernn_parser.coverage" NAME="gipernn_parser Coverage Results" MODIFIED="1571141282666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hh_env" />
     <SUITE FILE_PATH="coverage/hh_parser$hh_parser_f.coverage" NAME="hh_parser_f Coverage Results" MODIFIED="1571118285732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/hh_parser$data_aggregation.coverage" NAME="data_aggregation Coverage Results" MODIFIED="1571307025738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hh_parser$gipernn_parser__1_.coverage" NAME="gipernn_parser (1) Coverage Results" MODIFIED="1571118438949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/hh_parser$data_aggregation.coverage" NAME="data_aggregation Coverage Results" MODIFIED="1573124931259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 from data_aggregation import housing
+from sklearn.model_selection import train_test_split
 
 pd.set_option('display.max_columns', 50)
 #Преобразуем в категориальные признаки: район (district) и материал стен (material)
@@ -17,10 +18,20 @@ dis_mat_df = pd.DataFrame(data=housing_cat, columns=merged_enc_cat)
 #print(dis_mat_df.cumsum())
 catDF_plus_housingDF = housing.join(dis_mat_df) # ОБЪЕДИНЕННЫЙ ДАТАФРЕЙМ С КАТЕГОР ПРИЗНАКАМИ (дропнуть типы object)
 
+#Сбрасываем типы object: district, address, material
 
-
+catDF_plus_housingDF = catDF_plus_housingDF.drop(['district', 'address', 'material'], axis=1)
+print(catDF_plus_housingDF.info())
 
 # Разделение на Train_Test SPLIT
+train_set, test_set = train_test_split(catDF_plus_housingDF, test_size=0.2, random_state=42)
+#cбрасываем целевую переменную в трениновочном наборе
+housing_train = train_set.drop(['price'], axis=1)
+housing_labels = train_set['price'].copy()
+
+# Масштабирование признаков
+from sklearn.preprocessing import scale
+scaled_housing_train = scale(housing_train)
 
 '''
 1. данный блок вставить перед вырисовыванием графиков
