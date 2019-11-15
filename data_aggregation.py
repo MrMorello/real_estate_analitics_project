@@ -6,6 +6,8 @@ import matplotlib.image as mpimg
 
 
 df_adv = pd.read_excel('tables\gipernn_adv.xlsx', index_col=0)
+#Сразу создадим признак, который напрашивается сам собой - цена за кв. метр
+# Но его потом нужно сбросить, просто посмотрим как влияет
 df_adv['mean_price_sqrm'] = df_adv['price'] / df_adv['total_square']
 housing = df_adv.copy()
 
@@ -35,11 +37,31 @@ plt.savefig('images\_02attribute_histogram_plots')
 
 plt.show()
 
-# Построение матрицы коррелиации и создание новых призноков - перенести в data_aggregation
+# Построение матрицы коррелиации и создание новых признаков
 corr_matrix = housing.corr()
 corr_matrix.to_excel('tables\corr_matrix.xlsx')
 #Эксперементы с созданием новых признаков
 
+from pandas.plotting import scatter_matrix
+atributes = ["price", "total_square", "number_of_rooms", "build_year", "mean_price_sqrm"]
+scatter_matrix(housing[atributes], figsize=(12, 8))
+plt.savefig('images\_04_scatter_matrix_plots')
+
+#Попробуем добавить новые признаки - обычно размер кухни имеет не последнее значение для покупателей, поэтому
+# попробуем признак (площадь кухни к клощади квартиры), так же размер жилых комнат (жилая площадь к количеству комнат)
+#Средний размер жилой комнаты
+housing['avg_sqrm_living_room'] = housing['living_square'] / housing['number_of_rooms']
+#Площадь кухни к площади квартиры
+housing['kitchensqr_to_totalsqr'] = housing['kitchen_square'] / housing['total_square']
+#Площадь кухни к жилой площади
+housing['kitchensqr_to_livingsqr'] = housing['kitchen_square'] / housing['living_square']
+corr_matrix = housing.corr()
+corr_matrix.to_excel('tables\corr_matrix_experiment_features.xlsx')
+#Видно что размер жилых комнат коррелирует с ценой прямопропорционально, остальные не коррелируют практически совсем
+print(corr_matrix)
+#Неплохо, средний размер жилой комнаты может быть неплохим признаком, остальные сбросим
+housing = housing.drop(['kitchensqr_to_totalsqr', 'kitchensqr_to_livingsqr'], axis=1)
+housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
 
 
 
