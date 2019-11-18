@@ -6,6 +6,8 @@ import matplotlib.image as mpimg
 
 
 df_adv = pd.read_excel('tables\gipernn_adv.xlsx', index_col=0)
+#Сразу создадим признак, который напрашивается сам собой - цена за кв. метр
+# Но его потом нужно сбросить, просто посмотрим как влияет а так же для аналитики
 df_adv['mean_price_sqrm'] = df_adv['price'] / df_adv['total_square']
 housing = df_adv.copy()
 
@@ -32,31 +34,49 @@ plt.savefig("images\colorized_map_plot", dpi=400)
 housing.describe().to_excel('tables\describe_table.xlsx')
 housing.hist(bins=50, figsize=(20,15))
 plt.savefig('images\_02attribute_histogram_plots')
-
 plt.show()
-
 # Построение матрицы коррелиации и создание новых признаков
 corr_matrix = housing.corr()
 corr_matrix.to_excel('tables\corr_matrix.xlsx')
 #Эксперементы с созданием новых признаков
-
 from pandas.plotting import scatter_matrix
 atributes = ["price", "total_square", "number_of_rooms", "build_year", "mean_price_sqrm"]
 scatter_matrix(housing[atributes], figsize=(12, 8))
 plt.savefig('images\_04_scatter_matrix_plots')
 
-#Попробуем добавить новые признаки - обычно размер кухни имеет не последнее значение для покупателей, поэтому
-# попробуем признак (площадь кухни к клощади квартиры), так же размер жилых комнат (жилая площадь к количеству комнат)
+# сбрасываем цену за метр
+housing = housing.drop(['mean_price_sqrm'], axis=1)
+
+#Подсказки ментора, создаем новые переменные и нормализуем значения(от 0 до 1)
 #Средний размер жилой комнаты
 housing['avg_sqrm_living_room'] = housing['living_square'] / housing['number_of_rooms']
-#Площадь кухни к площади квартиры
-housing['kitchensqr_to_totalsqr'] = housing['kitchen_square'] / housing['total_square']
-#Площадь кухни к жилой площади
-housing['kitchensqr_to_livingsqr'] = housing['kitchen_square'] / housing['living_square']
+# % жилой пл. от общей
+housing['living_to_total'] = housing['living_square'] / housing['total_square']
+#пл. кухни к жилой
+housing['kitchen_to_living'] = housing['kitchen_square'] / housing['living_square']
+#пл. кухни к общей
+housing['kitchen_to_total'] = housing['kitchen_square'] / housing['total_square']
+#текущий этаж / к-во этажей
+housing['curFlor_to_totFlor'] = housing['current_floor'] / housing['number_of_floors']
+#преобразуем год постройки в возраст
+housing['house_age'] = 2019 - housing['build_year']
+
 corr_matrix = housing.corr()
 corr_matrix.to_excel('tables\corr_matrix_experiment_features.xlsx')
 #Видно что размер жилых комнат коррелирует с ценой прямопропорционально, остальные не коррелируют практически совсем
-print("Done")
+#Проверим важность признаков после обучения модели используем feature importance
+housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
+
+            #Нормализуем данные
+normalized_housing = housing.copy()
+from sklearn.preprocessing import MinMaxScaler
+data_for_scale = normalized_housing[['price', 'number_of_rooms', 'total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'curFlor_to_totFlor']].copy()
+scaler = MinMaxScaler()
+print(scaler.fit(data_for_scale))
+scaled_data = scaler.transform(data_for_scale)
+scaled_data.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx') #сначала нужно перевест в DataFrame
+
+
 
 
 
