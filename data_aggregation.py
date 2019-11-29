@@ -79,34 +79,42 @@ housing['distance'] = housing.apply(
     ).km),
     axis=1
 )
-housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
-        #           Train_Test_Split
-train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42, shuffle=True)
-housing_train = train_set.drop(['price'], axis=1)
-housing_labels = train_set['price'].copy()
-# ПЕРЕНАЗНАЧЕНИЕ ПЕРЕМЕННОЙ - надо поменять имена !
-print(train_set)    # НЕ ШАФЛЮТСЯ !  ! !!
-            #Нормализуем данные
-normalized_housing = housing_train.copy()
-from sklearn.preprocessing import MinMaxScaler
-data_for_scale = normalized_housing[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']].copy()
-scaler = MinMaxScaler()
-print(scaler.fit(data_for_scale))
-scaled_data = scaler.transform(data_for_scale)
-print(type(scaled_data))
-normalized_housing = pd.DataFrame(scaled_data, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
-#normalized_housing.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx') #сначала нужно перевест в DataFrame
-housing_prepared = normalized_housing.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
-housing_prepared.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx')
-# теперь: OneHotEncoder - Количество комнат, дайон, материал
-#
-housing_cat = housing[['district', 'material', 'number_of_rooms']].copy()
+
+
+  # ONE HOT ENCODER надо сделать для всего набора !
+housing_cat_train = housing[['district', 'material', 'number_of_rooms']].copy()
 encoder = OneHotEncoder()
-housing_cat = encoder.fit_transform(housing_cat).toarray()
+housing_cat_train = encoder.fit_transform(housing_cat_train).toarray()
 merged_enc_cat1 = encoder.categories_[0]
 merged_enc_cat2 = encoder.categories_[1]
 merged_enc_cat3 = encoder.categories_[2]
 merged_enc_cat = [*merged_enc_cat1, *merged_enc_cat2, *merged_enc_cat3]
-encoded_df = pd.DataFrame(data=housing_cat, columns=merged_enc_cat)
-final_df = housing_prepared.join(encoded_df)
-final_df.to_excel('tables\_alldataOHE.xlsx')
+encoded_df = pd.DataFrame(data=housing_cat_train, columns=merged_enc_cat)
+housing = housing.join(encoded_df)
+housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
+
+                     #           Train_Test_Split
+train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42, shuffle=True)
+housing_train = train_set.drop(['price'], axis=1)
+housing_labels = train_set['price'].copy()
+train_set.to_excel('tables\_train_set.xlsx')
+
+            #Нормализуем данные
+
+from sklearn.preprocessing import MinMaxScaler
+#data_for_scale = housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]
+#print(data_for_scale)
+scaler = MinMaxScaler()
+scaler.fit(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']])
+normalized_housing_train = pd.DataFrame(scaler.transform(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_train.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
+print(normalized_housing_train)
+
+normalized_housing_train = normalized_housing_train.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
+normalized_housing_train = normalized_housing_train.join(housing[housing.columns[-25:]])
+#y = dataframe[dataframe.columns[-3:]]
+normalized_housing_train.to_excel('tables\_NormalizedDataBeforeOneHotEnc1.xlsx')
+#housing_prepared.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx')
+# теперь: OneHotEncoder - Количество комнат, дайон, материал
+#
+
+
