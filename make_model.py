@@ -1,4 +1,4 @@
-from encoding_trtest_split import housing_train, housing_labels
+from data_aggregation import normalized_housing_test_X, housing_test_y, normalized_housing_train_X, housing_train_y
 from sklearn.linear_model import LinearRegression, ElasticNet
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import numpy as np
@@ -8,6 +8,11 @@ from sklearn.neighbors import KNeighborsRegressor
 import xgboost as xgb
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.pipeline import make_pipeline
+train_X = normalized_housing_train_X.copy()
+train_y = housing_train_y.copy()
+test_X = normalized_housing_test_X.copy()
+test_y = housing_test_y.copy()
+
 """
 #Example from KAGGLE
 n_folds = 5

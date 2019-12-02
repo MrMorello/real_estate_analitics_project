@@ -96,7 +96,9 @@ housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
                      #           Train_Test_Split
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42, shuffle=True)
 housing_train = train_set.drop(['price'], axis=1)
-housing_labels = train_set['price'].copy()
+housing_train_y = train_set['price'].copy()
+housing_test_X = test_set.drop(['price'], axis=1)
+housing_test_y = test_set['price'].copy()
 train_set.to_excel('tables\_train_set.xlsx')
 
             #Нормализуем данные
@@ -106,15 +108,18 @@ from sklearn.preprocessing import MinMaxScaler
 #print(data_for_scale)
 scaler = MinMaxScaler()
 scaler.fit(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']])
-normalized_housing_train = pd.DataFrame(scaler.transform(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_train.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
-print(normalized_housing_train)
+normalized_housing_train_X = pd.DataFrame(scaler.transform(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_train.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
 
-normalized_housing_train = normalized_housing_train.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
-normalized_housing_train = normalized_housing_train.join(housing[housing.columns[-25:]])
+normalized_housing_train_X = normalized_housing_train_X.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
+normalized_housing_train_X = normalized_housing_train_X.join(housing[housing.columns[-25:]])
 #y = dataframe[dataframe.columns[-3:]]
-normalized_housing_train.to_excel('tables\_NormalizedDataBeforeOneHotEnc1.xlsx')
+normalized_housing_train_X.to_excel('tables\_NormalizedDataBeforeOneHotEnc1.xlsx')
 #housing_prepared.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx')
-# теперь: OneHotEncoder - Количество комнат, дайон, материал
-#
+# теперь: OneHotEncoder - Количество комнат, район, материал
 
+        #Нормализация тестового набора
+normalized_housing_test_X = pd.DataFrame(scaler.transform(housing_test_X[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_test_X.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
+normalized_housing_test_X = normalized_housing_test_X.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
+normalized_housing_test_X = normalized_housing_test_X.join(housing[housing.columns[-25:]])
+normalized_housing_test_X.to_excel('tables\_normalized_housing_test_X.xlsx')
 
