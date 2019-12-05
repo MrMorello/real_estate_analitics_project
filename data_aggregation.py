@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 
 
 df_adv = pd.read_excel('tables\gipernn_adv.xlsx', index_col=0)
+print(df_adv.info())
 #Сразу создадим признак, который напрашивается сам собой - цена за кв. метр
 # Но его потом нужно сбросить, просто посмотрим как влияет а так же для аналитики
 df_adv['mean_price_sqrm'] = df_adv['price'] / df_adv['total_square']
@@ -19,10 +20,17 @@ housing['current_floor'] = housing['current_floor'].astype('float64')
 housing['ceiling_height'] = housing['ceiling_height'].replace('Уточнить', None)
 housing['ceiling_height'] = housing['ceiling_height'].astype('float64')
 
+housing.plot(kind="scatter", x="longtitude", y="latitude", alpha=0.4,
+    s=3, label="Objects", figsize=(10,7),
+    c="mean_price_sqrm", cmap=plt.get_cmap("gist_rainbow"), colorbar=True,
+    sharex=False)
+plt.legend()
+plt.savefig("images\mNomap", dpi=400)
+
 california_img=mpimg.imread('images\california2.png')
 ax = housing.plot(kind="scatter", x="longtitude", y="latitude", figsize=(10, 7),
                        s=3, label="Objects",
-                       c=housing['mean_price_sqrm'], cmap=plt.get_cmap("jet"),
+                       c=housing['mean_price_sqrm'], cmap=plt.get_cmap("gist_rainbow"),
                        colorbar=False, alpha=0.4)
 plt.imshow(california_img, extent=[43.6, 44.1, 56.15, 56.4], alpha=0.8,
            cmap=plt.get_cmap("jet"))
@@ -44,7 +52,8 @@ from pandas.plotting import scatter_matrix
 atributes = ["price", "total_square", "number_of_rooms", "build_year", "mean_price_sqrm"]
 scatter_matrix(housing[atributes], figsize=(12, 8))
 plt.savefig('images\_04_scatter_matrix_plots')
-
+housing.plot(kind="scatter", x="total_square", y="price", alpha=0.1)
+plt.savefig('images\_one_plot', dpi=400)
 # сбрасываем цену за метр
 housing = housing.drop(['mean_price_sqrm'], axis=1)
 
