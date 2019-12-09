@@ -54,9 +54,43 @@ scatter_matrix(housing[atributes], figsize=(12, 8))
 plt.savefig('images\_04_scatter_matrix_plots')
 housing.plot(kind="scatter", x="total_square", y="price", alpha=0.1)
 plt.savefig('images\_one_plot', dpi=400)
+
+
+
+##                  CLEARENCE START THERE
+#   Drop geographic outliers
+housing = housing.drop(housing[(housing.longtitude < 43.7) | ((housing.longtitude < 43.76) & (housing.latitude < 56.3)) |
+                               ((housing.longtitude > 44.0) & (housing.latitude < 56.1))].index)
+
+# остальные вылеты надо было чистить только в тестовом наборе
+housing = housing.drop(housing[(housing.build_year < 1850) | ((housing.mean_price_sqrm > 100000) & (housing.build_year < 1950)) |
+                               (housing.mean_price_sqrm > 200000)].index)
+housing = housing.drop(housing[((housing.mean_price_sqrm > 175000) & ((housing.price > 30000000) | (housing.total_square > 300)))].index)
+housing = housing.drop(housing[((housing.mean_price_sqrm < 28000) & ((housing.build_year > 1978) & (housing.mean_price_sqrm < 38000)))].index)
+print("От всего набора осталось: " + str(len(housing.index)))
+
+    # drop ctitical HI and LOW prices
+
+#show sqrm
+housing.plot(kind="scatter", x="build_year", y="mean_price_sqrm", alpha=0.1)
+plt.savefig('images\_plot_priceSQRM_to_age', dpi=400)
+housing.plot(kind="scatter", x="price", y="mean_price_sqrm", alpha=0.1)
+plt.savefig('images\_plot_priceSQRM_to_price', dpi=400)
+housing.plot(kind="scatter", x="total_square", y="mean_price_sqrm", alpha=0.1)
+plt.savefig('images\_plot_priceSQRM_to_totalSquare', dpi=400)
+'''
+cheap_sqrm = housing[(housing.mean_price_sqrm < 50000)]
+cheap_sqrm.plot(kind="scatter", x="build_year", y="mean_price_sqrm", alpha=0.2)
+plt.savefig('images\_plot_CHEAPpriceSQRM_to_age', dpi=400)
+'''
+housing.to_excel("cleared_df.xlsx")
+
+
 # сбрасываем цену за метр
 housing = housing.drop(['mean_price_sqrm'], axis=1)
 
+
+housing.reset_index(drop=True, inplace=True)
         #Подсказки ментора, создаем новые переменные и нормализуем значения(от 0 до 1)
 #Средний размер жилой комнаты
 housing['avg_sqrm_living_room'] = housing['living_square'] / housing['number_of_rooms']
@@ -132,3 +166,4 @@ normalized_housing_test_X = normalized_housing_test_X.join(housing[['living_to_t
 normalized_housing_test_X = normalized_housing_test_X.join(housing[housing.columns[-25:]])
 normalized_housing_test_X.to_excel('tables\_normalized_housing_test_X.xlsx')
 
+        # НАДО СБРОСИТЬ NUMBER OF ROOMS
