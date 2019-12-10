@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 
 
-df_adv = pd.read_excel('tables\gipernn_adv.xlsx', index_col=0)
+df_adv = pd.read_excel('tables\gipernn_adv_noWood.xlsx', index_col=0)
 print(df_adv.info())
 #Сразу создадим признак, который напрашивается сам собой - цена за кв. метр
 # Но его потом нужно сбросить, просто посмотрим как влияет а так же для аналитики
@@ -60,13 +60,14 @@ plt.savefig('images\_one_plot', dpi=400)
 ##                  CLEARENCE START THERE
 #   Drop geographic outliers
 housing = housing.drop(housing[(housing.longtitude < 43.7) | ((housing.longtitude < 43.76) & (housing.latitude < 56.3)) |
-                               ((housing.longtitude > 44.0) & (housing.latitude < 56.1))].index)
+                               ((housing.longtitude > 44.0) & (housing.latitude < 56.1)) | (housing.latitude < 56.2) | (housing.longtitude < 43.7)].index)
+
 
 # остальные вылеты надо было чистить только в тестовом наборе
-housing = housing.drop(housing[(housing.build_year < 1850) | ((housing.mean_price_sqrm > 100000) & (housing.build_year < 1950)) |
-                               (housing.mean_price_sqrm > 200000)].index)
-housing = housing.drop(housing[((housing.mean_price_sqrm > 175000) & ((housing.price > 30000000) | (housing.total_square > 300)))].index)
-housing = housing.drop(housing[((housing.mean_price_sqrm < 28000) & ((housing.build_year > 1978) & (housing.mean_price_sqrm < 38000)))].index)
+#housing = housing.drop(housing[(housing.build_year < 1850) | ((housing.mean_price_sqrm > 100000) & (housing.build_year < 1950)) |
+#                               (housing.mean_price_sqrm > 200000)].index)
+#housing = housing.drop(housing[((housing.mean_price_sqrm > 175000) | ((housing.price > 30000000) | (housing.total_square > 300)))].index)
+#housing = housing.drop(housing[((housing.mean_price_sqrm < 28000) | ((housing.build_year > 1978) & (housing.mean_price_sqrm < 38000)))].index)
 print("От всего набора осталось: " + str(len(housing.index)))
 
     # drop ctitical HI and LOW prices
@@ -88,6 +89,7 @@ housing.to_excel("cleared_df.xlsx")
 
 # сбрасываем цену за метр
 housing = housing.drop(['mean_price_sqrm'], axis=1)
+
 
 
 housing.reset_index(drop=True, inplace=True)
@@ -135,6 +137,9 @@ merged_enc_cat = [*merged_enc_cat1, *merged_enc_cat2, *merged_enc_cat3]
 encoded_df = pd.DataFrame(data=housing_cat_train, columns=merged_enc_cat)
 housing = housing.join(encoded_df)
 housing.to_excel('tables\AllDataBeforeOneHotEnc.xlsx')
+#СБРОС кол-ва КОМНАТ
+housing = housing.drop(['number_of_rooms'], axis=1)
+
 
                      #           Train_Test_Split
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42, shuffle=True)
@@ -154,7 +159,7 @@ scaler.fit(housing_train[['total_square', 'living_square', 'kitchen_square', 'ce
 normalized_housing_train_X = pd.DataFrame(scaler.transform(housing_train[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_train.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
 
 normalized_housing_train_X = normalized_housing_train_X.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
-normalized_housing_train_X = normalized_housing_train_X.join(housing[housing.columns[-25:]])
+normalized_housing_train_X = normalized_housing_train_X.join(housing[housing.columns[-24:]])
 #y = dataframe[dataframe.columns[-3:]]
 normalized_housing_train_X.to_excel('tables\_NormalizedDataBeforeOneHotEnc1.xlsx')
 #housing_prepared.to_excel('tables\_NormalizedDataBeforeOneHotEnc.xlsx')
@@ -163,7 +168,8 @@ normalized_housing_train_X.to_excel('tables\_NormalizedDataBeforeOneHotEnc1.xlsx
         #Нормализация тестового набора
 normalized_housing_test_X = pd.DataFrame(scaler.transform(housing_test_X[['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room']]), index=housing_test_X.index, columns=['total_square', 'living_square', 'kitchen_square', 'ceiling_height', 'house_age', 'distance', 'avg_sqrm_living_room'])
 normalized_housing_test_X = normalized_housing_test_X.join(housing[['living_to_total', 'kitchen_to_living', 'kitchen_to_total', 'curFlor_to_totFlor']])
-normalized_housing_test_X = normalized_housing_test_X.join(housing[housing.columns[-25:]])
+normalized_housing_test_X = normalized_housing_test_X.join(housing[housing.columns[-24:]])
 normalized_housing_test_X.to_excel('tables\_normalized_housing_test_X.xlsx')
 
         # НАДО СБРОСИТЬ NUMBER OF ROOMS
+
