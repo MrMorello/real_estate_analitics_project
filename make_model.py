@@ -1,4 +1,5 @@
 from data_aggregation import normalized_housing_test_X, housing_test_y, normalized_housing_train_X, housing_train_y, train_set, test_set
+from vsnik import norm_svflat
 from sklearn.linear_model import LinearRegression, ElasticNet
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import numpy as np
@@ -97,3 +98,8 @@ temp_test_set_XGB.to_excel('tables\_test_set_redundantAnalisysXGB.xlsx')
 etimation_XGB = pd.read_excel('tables\estimate_XGB.xlsx', index_col=0)
 print(etimation_XGB.describe())
 print('Done')
+
+fr_norm_svflat_pred = random_forest.predict(norm_svflat)
+print(fr_norm_svflat_pred)
+XGB_svflat_pred = model_xgb.predict(norm_svflat)
+print(XGB_svflat_pred)
